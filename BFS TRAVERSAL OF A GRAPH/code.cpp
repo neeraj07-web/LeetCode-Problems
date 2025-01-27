@@ -8,7 +8,7 @@ class Solution {
       
       for(int &v : adj[u]){ // ab is vertex u ke liye kon kon se vertex v tak jaa sakte hai
           if(!visited[v]){
-              DFS(adj,v,visited,result);
+              DFS(adj,v,visited,result); 
           }
       }
   }
@@ -27,9 +27,9 @@ class Solution {
         
         // result k liye
         vector<int> result;
-        vector<bool> visited(V, false);
+        vector<bool> visited(V, false);// V size ka visited array liya hai to store whether the nodes are visited or not
         
-        DFS(adj, 0, visited , result);// V size ka visited array liya hai to store whether the nodes are visited or not
+        DFS(adj, 0, visited , result);// initially we will start it from the node 0
         return result;
     }
 };
