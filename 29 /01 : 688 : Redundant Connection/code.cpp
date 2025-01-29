@@ -2,48 +2,47 @@
 //T.C : O(n^2)
 //S.C : O(n)
 class Solution {
+    // if there is a n edges  and there are n vertices then this is 100 percent sure that there exist a cycle
 public:
 
-    bool dfs(unordered_map<int, vector<int>> &adj, int u, int v, vector<bool>& visited) {
-        visited[u] = true;
+// bool dfs isliye kyuki humay batana hai hai ki connected hai ya nhi
+bool dfs(unordered_map<int, vector<int>>& adj, int u, int v, vector<bool>& visited){
+    visited[u]=true;
 
-        if(u == v) {
-            return true;
-        }
+    if(u== v){ // agar u---->v tak phunch gya tha toh return kardenge true jisse pata chl jayega ki connected hai dono
+        return true;
+}
+for(int &nghr : adj[u]){
+    if(visited[nghr]) continue; // agar already visited hai toh hum usse continue kar denge nahi toh
 
-        for(int &ngbr : adj[u]) {
-            if(visited[ngbr]) continue;
-
-            if(dfs(adj, ngbr, v, visited)) {
-                return true;
-            }
-        }
-
-        return false;
-
+    if(dfs(adj,nghr,v,visited)){
+        return true;
     }
-
+}
+return false;
+}
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        int n = edges.size();
-        //number of nodes = n
-        //number of edges = n
+     int n=edges.size();
+     // no .of nodes and no. of edges =n
 
-        unordered_map<int, vector<int>> adj;
+     unordered_map<int, vector<int>> adj;
+     for(int i=0; i<n;i++){
+        int u=edges[i][0];
+        int v= edges[i][1];
 
-        for(int i = 0; i < n; i++) {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            
-            vector<bool> visited(n, false);
-            if(adj.find(u) != adj.end() && adj.find(v) != adj.end() && dfs(adj, u, v, visited)) {
-                return edges[i];
-            }
+        vector<bool>visited(n,false);
 
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+        // check kar lunga ki yeh dono nodes present bhi hai ya nahi and yeh dono connect bhi hai ya nahi - dono connected hai ya nahi humay pata chalega using the dfs call threfore hum ismei dfs call kar rhay thay
+        if(adj.find(u) != adj.end() && adj.find(v) != adj.end() && dfs(adj,u,v,visited)){
+            return edges[i]; // agar already hai toh hum isse return kar denge as edges [i]
         }
 
-        return {};
+        // agar aisa nahi hai (already present nahi hai )toh hum isse push kar denge adj list mei
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+     }   
+     return {}; // agar kuch bhi hain toh blank vector bhej dete hai
+
     }
 };
 
